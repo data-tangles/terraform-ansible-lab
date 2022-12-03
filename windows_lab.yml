@@ -1,0 +1,8 @@
+- hosts: lab
+  roles:
+    - windows_adds
+    - windows_rds
+
+  vars_files:
+    - /ansible/vars/lab/adds_vars.yml
+    - /ansible/vars/lab/rds_vars.yml

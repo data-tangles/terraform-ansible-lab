@@ -1,0 +1,45 @@
+trigger:
+- none
+
+stages:
+  - stage: 'WindowsLabTemplate'
+    dependsOn: []
+    displayName: 'Windows Lab Template'
+      
+    jobs:
+      - job: 'terraforminit'
+        displayName: 'Terraform Init'
+        pool: Self-Hosted
+      
+        steps:
+          - task: CmdLine@2       
+            inputs:
+              script: |
+                terraform init -backend-config="/terraform/variables/lab_backend.tf"
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+      
+      - job: 'terraformplan'
+        dependsOn: terraforminit
+        displayName: 'Terraform Plan' 
+        pool: Self-Hosted
+      
+        steps:
+          - task: CmdLine@2
+            inputs:
+              script: |
+                terraform plan -var-file="/terraform/variables/terraform-esxi-vars/windows_lab_template.tfvars"
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+          - checkout: none
+      
+      - job: 'terraformapply'
+        dependsOn: terraformplan
+        displayName: 'Terraform Apply' 
+        pool: Self-Hosted
+      
+        steps:
+          - task: CmdLine@2
+            inputs:
+              script: |
+                terraform apply -var-file="/terraform/variables/terraform-esxi-vars/windows_lab_template.tfvars" -auto-approve
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+          - checkout: none
