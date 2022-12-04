@@ -20,9 +20,8 @@ provider "esxi" {
   esxi_password      = var.esxi_password
 }
 
-resource "esxi_guest" "vm" {
-  count              = var.vm_count
-  guest_name         = "${var.guest_name_prefix}-${count.index}"
+resource "esxi_guest" "vm1" {
+  guest_name         = var.guest_name
   disk_store         = var.disk_store
   clone_from_vm      = var.clone_from_vm
   boot_firmware      = var.boot_firmware
