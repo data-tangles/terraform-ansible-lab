@@ -5,4 +5,4 @@
 
   vars_files:
     - /ansible/vars/lab/client_template_vars.yml
-    - /ansible/vars/phpipam_vars.yml
+    - /ansible/vars/lab/phpipam_vars.yml
