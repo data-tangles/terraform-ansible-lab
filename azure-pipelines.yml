@@ -45,6 +45,7 @@ stages:
           - checkout: none
 
       - job: 'WindowsTemplate'
+        dependsOn: terraformapply
         displayName: 'Windows Template Apply'
         pool: Self-Hosted
         
@@ -58,6 +59,7 @@ stages:
               failOnStdErr: false
 
       - job: 'ADDSTemplate'
+        dependsOn: WindowsTemplate
         displayName: 'ADDS Template Apply'
         pool: Self-Hosted
         
@@ -114,6 +116,7 @@ stages:
           - checkout: none
 
       - job: 'WindowsTemplate'
+        dependsOn: terraformapply
         displayName: 'Windows Template Apply'
         pool: Self-Hosted
         
@@ -127,6 +130,7 @@ stages:
               failOnStdErr: false
 
       - job: 'RDSTemplate'
+        dependsOn: WindowsTemplate
         displayName: 'RDS Template Apply'
         pool: Self-Hosted
         
@@ -182,6 +186,7 @@ stages:
           - checkout: none
 
       - job: 'WindowsTemplate'
+        dependsOn: terraformapply
         displayName: 'Windows Template Apply'
         pool: Self-Hosted
         
