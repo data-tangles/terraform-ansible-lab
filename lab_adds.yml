@@ -1,0 +1,7 @@
+- hosts: domain_controller
+  gather_facts: yes
+  roles:
+    - windows_adds
+
+  vars_files:
+    - /ansible/vars/lab/adds_vars.yml

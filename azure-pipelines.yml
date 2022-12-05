@@ -2,9 +2,9 @@ trigger:
 - none
 
 stages:
-  - stage: 'WindowsLabTemplate'
+  - stage: 'adds_lab_template'
     dependsOn: []
-    displayName: 'Windows Lab Template'
+    displayName: 'ADDS Lab Template'
       
     jobs:
       - job: 'terraforminit'
@@ -27,7 +27,7 @@ stages:
           - task: CmdLine@2
             inputs:
               script: |
-                terraform plan -var-file="/terraform/variables/terraform-esxi-vars/windows_lab_template.tfvars"
+                terraform plan -var-file="/terraform/variables/terraform-esxi-vars/lab/domain_controller.tfvars"
               workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
           - checkout: none
       
@@ -40,6 +40,157 @@ stages:
           - task: CmdLine@2
             inputs:
               script: |
-                terraform apply -var-file="/terraform/variables/terraform-esxi-vars/windows_lab_template.tfvars" -auto-approve
+                terraform apply -var-file="/terraform/variables/terraform-esxi-vars/lab/domain_controller.tfvars" -auto-approve
               workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
           - checkout: none
+
+      - job: 'WindowsTemplate'
+        displayName: 'Windows Template Apply'
+        pool: Self-Hosted
+        
+        steps:
+          - task: Ansible@0
+            inputs:
+              ansibleInterface: 'agentMachine'
+              playbookPathOnAgentMachine: '$(System.DefaultWorkingDirectory)/lab_template_adds.yml'
+              inventoriesAgentMachine: 'file'
+              inventoryFileOnAgentMachine: '/ansible/inventory/lab_template'
+              failOnStdErr: false
+
+      - job: 'ADDSTemplate'
+        displayName: 'ADDS Template Apply'
+        pool: Self-Hosted
+        
+        steps:
+          - task: Ansible@0
+            inputs:
+              ansibleInterface: 'agentMachine'
+              playbookPathOnAgentMachine: '$(System.DefaultWorkingDirectory)/lab_adds.yml'
+              inventoriesAgentMachine: 'file'
+              inventoryFileOnAgentMachine: '/ansible/inventory/lab'
+              failOnStdErr: false        
+      
+
+  - stage: 'app_lab_template'
+    dependsOn: []
+    displayName: 'App Lab Template'
+      
+    jobs:
+      - job: 'terraforminit'
+        displayName: 'Terraform Init'
+        pool: Self-Hosted
+      
+        steps:
+          - task: CmdLine@2       
+            inputs:
+              script: |
+                terraform init -backend-config="/terraform/variables/lab_backend.tf"
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+      
+      - job: 'terraformplan'
+        dependsOn: terraforminit
+        displayName: 'Terraform Plan' 
+        pool: Self-Hosted
+      
+        steps:
+          - task: CmdLine@2
+            inputs:
+              script: |
+                terraform plan -var-file="/terraform/variables/terraform-esxi-vars/lab/app_server.tfvars"
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+          - checkout: none
+      
+      - job: 'terraformapply'
+        dependsOn: terraformplan
+        displayName: 'Terraform Apply' 
+        pool: Self-Hosted
+      
+        steps:
+          - task: CmdLine@2
+            inputs:
+              script: |
+                terraform apply -var-file="/terraform/variables/terraform-esxi-vars/lab/app_server.tfvars" -auto-approve
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+          - checkout: none
+
+      - job: 'WindowsTemplate'
+        displayName: 'Windows Template Apply'
+        pool: Self-Hosted
+        
+        steps:
+          - task: Ansible@0
+            inputs:
+              ansibleInterface: 'agentMachine'
+              playbookPathOnAgentMachine: '$(System.DefaultWorkingDirectory)/lab_template_app.yml'
+              inventoriesAgentMachine: 'file'
+              inventoryFileOnAgentMachine: '/ansible/inventory/lab'
+              failOnStdErr: false
+
+      - job: 'RDSTemplate'
+        displayName: 'RDS Template Apply'
+        pool: Self-Hosted
+        
+        steps:
+          - task: Ansible@0
+            inputs:
+              ansibleInterface: 'agentMachine'
+              playbookPathOnAgentMachine: '$(System.DefaultWorkingDirectory)/lab_rds.yml'
+              inventoriesAgentMachine: 'file'
+              inventoryFileOnAgentMachine: '/ansible/inventory/lab'
+              failOnStdErr: false   
+
+  - stage: 'client_lab_template'
+    dependsOn: []
+    displayName: 'Cient Lab Template'
+      
+    jobs:
+      - job: 'terraforminit'
+        displayName: 'Terraform Init'
+        pool: Self-Hosted
+      
+        steps:
+          - task: CmdLine@2       
+            inputs:
+              script: |
+                terraform init -backend-config="/terraform/variables/lab_backend.tf"
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+      
+      - job: 'terraformplan'
+        dependsOn: terraforminit
+        displayName: 'Terraform Plan' 
+        pool: Self-Hosted
+      
+        steps:
+          - task: CmdLine@2
+            inputs:
+              script: |
+                terraform plan -var-file="/terraform/variables/terraform-esxi-vars/lab/client_server.tfvars"
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+          - checkout: none
+      
+      - job: 'terraformapply'
+        dependsOn: terraformplan
+        displayName: 'Terraform Apply' 
+        pool: Self-Hosted
+      
+        steps:
+          - task: CmdLine@2
+            inputs:
+              script: |
+                terraform apply -var-file="/terraform/variables/terraform-esxi-vars/lab/client_server.tfvars" -auto-approve
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+          - checkout: none
+
+      - job: 'WindowsTemplate'
+        displayName: 'Windows Template Apply'
+        pool: Self-Hosted
+        
+        steps:
+          - task: Ansible@0
+            inputs:
+              ansibleInterface: 'agentMachine'
+              playbookPathOnAgentMachine: '$(System.DefaultWorkingDirectory)/lab_template_client.yml'
+              inventoriesAgentMachine: 'file'
+              inventoryFileOnAgentMachine: '/ansible/inventory/lab'
+              failOnStdErr: false
+        

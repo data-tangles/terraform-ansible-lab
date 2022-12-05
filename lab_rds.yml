@@ -1,8 +1,7 @@
-- hosts: lab
+- hosts: app_server
+  gather_facts: yes
   roles:
-    - windows_adds
     - windows_rds
 
   vars_files:
-    - /ansible/vars/lab/adds_vars.yml
     - /ansible/vars/lab/rds_vars.yml
