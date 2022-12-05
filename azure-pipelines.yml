@@ -55,7 +55,7 @@ stages:
               ansibleInterface: 'agentMachine'
               playbookPathOnAgentMachine: '$(System.DefaultWorkingDirectory)/lab_template_adds.yml'
               inventoriesAgentMachine: 'file'
-              inventoryFileOnAgentMachine: '/ansible/inventory/lab_template'
+              inventoryFileOnAgentMachine: '/ansible/inventory/lab'
               failOnStdErr: false
 
       - job: 'ADDSTemplate'
