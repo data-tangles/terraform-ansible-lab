@@ -20,7 +20,7 @@ provider "esxi" {
   esxi_password      = var.esxi_password
 }
 
-resource "esxi_guest" "vm1" {
+resource "esxi_guest" "vm" {
   guest_name         = var.guest_name
   disk_store         = var.disk_store
   clone_from_vm      = var.clone_from_vm
