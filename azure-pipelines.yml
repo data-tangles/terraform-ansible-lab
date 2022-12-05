@@ -70,7 +70,8 @@ stages:
               playbookPathOnAgentMachine: '$(System.DefaultWorkingDirectory)/lab_adds.yml'
               inventoriesAgentMachine: 'file'
               inventoryFileOnAgentMachine: '/ansible/inventory/lab'
-              failOnStdErr: false        
+              failOnStdErr: false
+          - checkout: none        
       
 
   - stage: 'app_lab_template'
@@ -141,7 +142,8 @@ stages:
               playbookPathOnAgentMachine: '$(System.DefaultWorkingDirectory)/lab_rds.yml'
               inventoriesAgentMachine: 'file'
               inventoryFileOnAgentMachine: '/ansible/inventory/lab'
-              failOnStdErr: false   
+              failOnStdErr: false
+          - checkout: none   
 
   - stage: 'client_lab_template'
     dependsOn: []
