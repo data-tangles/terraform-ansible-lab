@@ -25,6 +25,12 @@
   poll: 0
   ignore_errors: true
 
+- name: Set DNS Server address
+  ansible.windows.win_dns_client:
+    adapter_names: '*'
+    dns_servers:
+    - "{{ DNS_SERVER }}"
+
 # Update phpIPAM 
 
 - name: Reserve an IP address
