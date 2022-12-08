@@ -55,7 +55,7 @@ stages:
               ansibleInterface: 'agentMachine'
               playbookPathOnAgentMachine: '$(System.DefaultWorkingDirectory)/lab_template_adds.yml'
               inventoriesAgentMachine: 'file'
-              inventoryFileOnAgentMachine: '/ansible/inventory/lab'
+              inventoryFileOnAgentMachine: '/ansible/inventory/lab/lab_template.yml'
               failOnStdErr: false
 
       - job: 'ADDSTemplate'
@@ -69,7 +69,7 @@ stages:
               ansibleInterface: 'agentMachine'
               playbookPathOnAgentMachine: '$(System.DefaultWorkingDirectory)/lab_adds.yml'
               inventoriesAgentMachine: 'file'
-              inventoryFileOnAgentMachine: '/ansible/inventory/lab'
+              inventoryFileOnAgentMachine: '/ansible/inventory/lab/lab.yml'
               failOnStdErr: false
           - checkout: none        
       
@@ -127,7 +127,7 @@ stages:
               ansibleInterface: 'agentMachine'
               playbookPathOnAgentMachine: '$(System.DefaultWorkingDirectory)/lab_template_app.yml'
               inventoriesAgentMachine: 'file'
-              inventoryFileOnAgentMachine: '/ansible/inventory/lab'
+              inventoryFileOnAgentMachine: '/ansible/inventory/lab/lab_template.yml'
               failOnStdErr: false
 
       - job: 'RDSTemplate'
@@ -141,7 +141,7 @@ stages:
               ansibleInterface: 'agentMachine'
               playbookPathOnAgentMachine: '$(System.DefaultWorkingDirectory)/lab_rds.yml'
               inventoriesAgentMachine: 'file'
-              inventoryFileOnAgentMachine: '/ansible/inventory/lab'
+              inventoryFileOnAgentMachine: '/ansible/inventory/lab/lab.yml'
               failOnStdErr: false
           - checkout: none   
 
@@ -198,6 +198,6 @@ stages:
               ansibleInterface: 'agentMachine'
               playbookPathOnAgentMachine: '$(System.DefaultWorkingDirectory)/lab_template_client.yml'
               inventoriesAgentMachine: 'file'
-              inventoryFileOnAgentMachine: '/ansible/inventory/lab'
+              inventoryFileOnAgentMachine: '/ansible/inventory/lab/lab_template.yml'
               failOnStdErr: false
         
