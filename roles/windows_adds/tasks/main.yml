@@ -7,11 +7,9 @@
   ansible.windows.win_reboot:
   when: res.reboot_required
 
-- name: Install ADDS Role
-  ansible.windows.win_domain_controller:
+- name: Create new Domain/Forest
+  ansible.windows.win_domain:
     dns_domain_name: "{{ DNS_DOMAIN_NAME }}"
-    domain_admin_user: "{{ DOMAIN_ADMIN_USER }}"
-    domain_admin_password: "{{ DOMAIN_ADMIN_PASSWORD }}"
     safe_mode_password: "{{ SAFE_MODE_PASSWORD }}"
     state: domain_controller
 
