@@ -12,10 +12,11 @@
     dns_domain_name: "{{ DNS_DOMAIN_NAME }}"
     safe_mode_password: "{{ SAFE_MODE_PASSWORD }}"
     state: domain_controller
+  register: domain_controller
 
 - name: Reboot after ADDS install
   ansible.windows.win_reboot:
-  when: domain_controller.reboot_required
+  when: domain_controller.changed
 
 - name: Create new Root OU
   community.windows.win_domain_ou:
