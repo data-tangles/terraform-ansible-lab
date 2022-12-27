@@ -5,4 +5,9 @@
 
 ![visitors](https://visitor-badge.glitch.me/badge?page_id=qman-being.terraform-ansible-lab&left_color=grey&right_color=red)
 
-# terraform-ansible-lab
+# Terraform Ansible Lab
+
+This repo contains a combination of Terraform and Ansible code that will clone template VM's and then, using Ansible, setup AD, RDS and a Client RDS session host. You could modify the playbooks to install various Server Roles and create even more VM's
+
+More info on the esxi terraform provider can be found at - https://github.com/josenk/terraform-provider-esxi
+More info on Ansible can be found at: https://docs.ansible.com/
